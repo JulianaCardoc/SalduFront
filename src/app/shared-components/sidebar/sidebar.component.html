@@ -1,0 +1,25 @@
+<div class="bg-bg text-white flex flex-col justify-between">
+    <ul class="pt-2">
+        <a href="#">
+        <li class="py-4 px-8">
+            <fa-icon [icon]="faChartLine"></fa-icon> Dashboard
+        </li></a>
+        <a routerLink="/invoices">
+        <li class="py-4 px-8" routerLinkActive="bg-bghover">
+            <fa-icon [icon]="faFileLines"></fa-icon> Facturación
+        </li></a>
+        <a href="#">
+        <li class="py-4 px-8">
+            <fa-icon [icon]="faList"></fa-icon> Mis Productos
+        </li></a>
+        <a href="#">
+        <li class="py-4 px-8">
+            <fa-icon [icon]="faDolly"></fa-icon> Mis Órdenes
+        </li></a>
+        <a href="#">
+        <li class="py-4 px-8">
+            <fa-icon [icon]="faChartBar"></fa-icon> Reportes
+        </li></a>
+    </ul>
+    <button (click)="logout()" class="py-8"><fa-icon [icon]="faRightFromBracket"></fa-icon> Log out</button>
+</div>

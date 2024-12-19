@@ -1,0 +1,27 @@
+<section class="p-8 bg-gray-200 flex flex-col justify-between">
+    <div>
+        <h1 class="text-2xl">Facturación</h1>
+    <div class="border flex justify-between p-4">
+        <span>Orden a facturar</span>
+        <span>Total fra (Iva incluído)</span>
+        <div class="space-x-2 align-middle">   
+            <input type="checkbox" [(ngModel)]="selectAll" (change)="toggleSelectAll()">
+        </div>
+    </div>
+    <div class="bg-white">
+    @for(invoice of invoices; track invoice.id) {
+        <div class="border flex justify-between p-4">
+            <h1>{{ invoice.id }}</h1>
+            <span>{{ invoice.taxedPrice }}</span>
+            <div class="space-x-2 align-middle">
+                <fa-icon [icon]="faPenToSquare" class="cursor-pointer"/>
+                <input type="checkbox" [(ngModel)]="invoice.checkbox" (change)="checkboxChanged()">
+            </div>
+        </div>
+    }
+</div>
+    </div>
+<div class="flex justify-end bottom">
+    <button (click)="submit()" class="bg-bg hover:bg-bghover rounded-2xl text-white font-semibold p-4">Facturar</button>
+</div>
+</section>

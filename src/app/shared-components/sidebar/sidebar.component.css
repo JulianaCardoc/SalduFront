@@ -1,0 +1,11 @@
+li:hover {
+    background-color: #2f2f2f;
+}
+
+div {
+    height: calc(100vh - 60px);
+}
+
+button:hover {
+    color: #e2e053;
+}
