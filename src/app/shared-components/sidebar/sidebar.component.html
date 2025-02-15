@@ -65,6 +65,14 @@
                         </li>
                     </a>
                 </cdk-accordion-item>
+                <cdk-accordion-item #itemProducts="cdkAccordionItem">
+                    <a routerLink="/products-management">
+                        <li class="py-3 px-5 mx-5 mb-2 rounded-3xl" [routerLinkActive]="['bg-bglight']"
+                            [style.display]="itemProducts.expanded ? '' : 'none'"><fa-icon [icon]="faStore"
+                                class="px-2"></fa-icon> Gestión de productos
+                        </li>
+                    </a>
+                </cdk-accordion-item>
             </cdk-accordion>
             <cdk-accordion>
                 <li (click)="$event.stopPropagation(); itemUsers.toggle()"

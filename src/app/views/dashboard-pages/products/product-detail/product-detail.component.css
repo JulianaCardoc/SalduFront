@@ -1,0 +1,49 @@
+.detail {
+  min-height: 80dvh ;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.toggle-button {
+  width: 50px;
+  height: 25px;
+  border-radius: 50px;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.toggle-button.inactive {
+  background-color: #bd362f;
+}
+
+.toggle-button.active {
+  background-color: #295c29;
+}
+
+.toggle-button::before {
+  position: absolute;
+  content: '';
+  background-color: white;
+  width: 22.5px;
+  height: 22.5px;
+  border-radius: 50px;
+  margin: 1px;
+  transition: transform 0.2s;
+}
+
+.toggle-button.active::before {
+  transform: translateX(25px);
+}
+
+input#check {
+  display: none;
+}

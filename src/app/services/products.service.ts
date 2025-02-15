@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Load, Product, UploadResponse } from '../models/product.model';
+import { Load, Product, UploadResponse, WooProduct, WooProductResponse } from '../models/product.model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +9,7 @@ export class ProductsService {
 
   private http = inject(HttpClient);
   private apiUrl = 'http://ec2-3-138-142-64.us-east-2.compute.amazonaws.com:3001/upload-product';
+  private apiUrlWooProds = 'http://ec2-3-138-142-64.us-east-2.compute.amazonaws.com:3001/products';
 
 
   constructor() { }
@@ -58,6 +59,26 @@ export class ProductsService {
       formData.append('file', file)
     };
     return this.http.post<{url: string}>(`${this.apiUrl}/s3-upload/${providerId}/${productId}`, formData);
+  }
+
+  getWooProducts(providerId: number) {
+    return this.http.get<WooProductResponse>(`${this.apiUrlWooProds}/user/${providerId}`)
+  }
+
+  inactivateProduct(productId: number) {
+    return this.http.patch(`${this.apiUrlWooProds}/delete/${productId}`, {})
+  }
+
+  activateProduct(productId: number) {
+    return this.http.patch(`${this.apiUrlWooProds}/activate/${productId}`, {})
+  }
+
+  getOneWooProduct(providerId: number, productId: number) {
+    return this.http.get<WooProduct>(`${this.apiUrlWooProds}/${providerId}/${productId}`)
+  }
+
+  updateWooProduct(productId: number, payload: WooProduct) {
+    return this.http.patch<WooProduct>(`${this.apiUrlWooProds}/update/${productId}`, payload)
   }
 
 }

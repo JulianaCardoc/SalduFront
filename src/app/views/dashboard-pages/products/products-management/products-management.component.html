@@ -1,0 +1,62 @@
+<section class="section text-bglight">
+    <h1 class="py-4">Gestión de productos</h1>
+    <form [formGroup]="formProvider" class="py-2 flex md:justify-between">
+        <article class="flex flex-col gap-4 md:flex-row">
+            <select name="" id="" class="p-2 border-b-2 bg-lightgray max-w-min mr-12" formControlName="selectProvider">
+                <option value="default" selected="selected">Seleccione un proveedor</option>
+                @for(user of users; track $index) {
+                <option [value]="user.id_wooCommerce">{{ user.email }}</option>
+                }
+            </select>
+            <div class="mr-12">
+                <input placeholder="SKU" type="text" name="" id="" class="p-2 border-2 rounded-lg">
+                <fa-icon class="pl-4 cursor-pointer" [icon]="faMagnifyingGlass"></fa-icon>
+            </div>
+            <select name="" id="" class="p-2 border-b-2 bg-lightgray max-w-min" formControlName="selectStatus">
+                <option value="default" selected="selected">Estado</option>
+                @for(status of productStatuses; track $index) {
+                <option [value]="status">{{ status }}</option>
+                }
+            </select>
+        </article>
+        <span class="bg-bg text-white text-center max-w-fit px-8 py-2">Productos en total: {{ filteredProducts.length
+            }}</span>
+    </form>
+    @if(products.length > 0) {
+    <table class="w-full border-collapse border-spacing-0 pr-2">
+        <thead>
+            <tr>
+                <td class="p-2 md:p-4">ID</td>
+                <td class="p-2 md:p-4">Nombre</td>
+                <td class="p-2 text-center md:p-4">Descripción</td>
+                <td class="p-2 text-center md:p-4">Estado</td>
+                <td class="p-2 text-right md:p-4">Precio</td>
+                <td class="p-2 text-center md:p-4">Cambiar estado</td>
+
+            </tr>
+        </thead>
+        @for(product of filteredProducts; track $index) {
+        <tbody>
+            <tr class="text-sm bg-white h-auto md:p-4" >
+                <td class="p-2 border-b-2 md:p-4 md:max-w-40 cursor-pointer"><a [routerLink]="['/product-detail/', formProvider.get('selectProvider')?.value , product.id]">{{ product.id}}</a></td>
+                <td class="p-2 border-b-2 max-w-40 break-normal md:p-4">{{ product.name }}</td>
+                <td class="p-2 border-b-2 max-w-40 break-normal text-center md:p-4">{{ product.description }}</td>
+                <td class="p-2 border-b-2 max-w-40 break-normal text-center md:p-4">{{ product.status }}</td>
+                <td class="p-2 border-b-2 max-w-40 break-normal text-right md:p-4">{{ product.price | currency: '$':
+                    'symbol':'1.0-0' }}</td>
+                <td class="p-2 border-b-2 text-center md:p-4">
+                    @if(product.status == 'draft'){
+                    <app-button typeBtn="submit" color="success"
+                        (click)="activateProduct(product.id)">Activar</app-button>
+                    }
+                    @if(product.status == 'publish') {
+                    <app-button typeBtn="button" color="danger"
+                        (click)="inactivateProduct(product.id)">Inactivar</app-button>
+                    }
+                </td>
+            </tr>
+        </tbody>
+        }
+    </table>
+    }
+</section>

@@ -5,6 +5,7 @@ import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { InvoiceDetailComponent } from './views/dashboard-pages/invoices/invoice-detail/invoice-detail.component';
 import { NotFoundComponent } from './views/not-found/not-found.component';
+import { ProductDetailComponent } from './views/dashboard-pages/products/product-detail/product-detail.component';
 
 export const routes: Routes = [
     {
@@ -54,6 +55,14 @@ export const routes: Routes = [
           {
             path: 'user-edition',
             loadComponent: () => import('./views/dashboard-pages/users/edit-user/edit-user.component').then(m => m.EditUserComponent)
+          },
+          {
+            path: 'products-management',
+            loadComponent: () => import('./views/dashboard-pages/products/products-management/products-management.component').then(m => m.ProductsManagementComponent)
+          },
+          {
+            path: 'product-detail/:providerId/:productId',
+            loadComponent: () => import('./views/dashboard-pages/products/product-detail/product-detail.component').then(m => m.ProductDetailComponent)
           },
         ]
       },

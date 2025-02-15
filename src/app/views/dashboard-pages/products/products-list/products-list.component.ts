@@ -99,7 +99,6 @@ export class ProductsListComponent {
   }
 
   saveImage(productId: number, urlImage: string) {
-    console.log(productId, urlImage);
     this.productService.saveProductImage(productId.toString(), urlImage).subscribe({
       next: (data) => {
         this.updateImageResponse = data;

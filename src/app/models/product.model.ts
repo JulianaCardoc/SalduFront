@@ -28,3 +28,33 @@ export interface Load {
     reference: string;
     createdAt: string;
 }
+
+export interface WooProduct {
+    id: number;
+    name: string;
+    description: string;
+    status: string;
+    price: number;
+    images?: {
+        id: number;
+        date_created: string;
+        date_created_gmt: string;
+        date_modified: string;
+        date_modified_gmt: string;
+        src: string;
+        name: string;
+        alt: string;
+    }[];
+    stock_status?: string;
+    stock_quantity?: number;
+}
+
+export interface WooProductResponse {
+    productsData: WooProduct[];
+    totalElements: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+    hasPrevPage: boolean;
+    hasNextPage: boolean;
+}

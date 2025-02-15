@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
-import { faChartLine, faXmark, faBars, faUser, faUserPen, faUserPlus, faNotdef, faImages, faFileArrowUp, faChevronDown, faUsers, faFileLines, faList, faDolly, faChartBar, faRightFromBracket, faX, faFileInvoice, faFileInvoiceDollar } from '@fortawesome/free-solid-svg-icons';
+import { faChartLine, faStore, faXmark, faBars, faUser, faUserPen, faUserPlus, faNotdef, faImages, faFileArrowUp, faChevronDown, faUsers, faFileLines, faList, faDolly, faChartBar, faRightFromBracket, faX, faFileInvoice, faFileInvoiceDollar } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../services/auth.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -34,6 +34,7 @@ export class SidebarComponent {
   faUser = faUser;
   faBars = faBars;
   faXmark = faXmark;
+  faStore = faStore;
 
   @Input() isSidebarVisible = false;
   @Output() closeSidebar = new EventEmitter<void>();
