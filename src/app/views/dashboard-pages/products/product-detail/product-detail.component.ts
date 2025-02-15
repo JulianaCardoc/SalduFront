@@ -1,7 +1,7 @@
 import { Component, inject, Input, signal } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { WooProduct } from '../../../../models/product.model';
 import { ProductsService } from '../../../../services/products.service';
@@ -23,14 +23,30 @@ export class ProductDetailComponent {
 
   product = signal<WooProduct | null>(null);
   isPublished = signal<boolean>(false);
+  productForm: FormGroup = new FormGroup({
+    name: new FormControl(''),
+    stock_quantity: new FormControl(0),
+    description: new FormControl(''),
+    price: new FormControl(0)
+  });
 
-  async ngOnInit() {
+  ngOnInit() {
+    this.getWooProduct();
+  }
+
+  async getWooProduct() {
     if (this.providerId !== undefined && this.productId !== undefined) {
       await new Promise<void>((resolve) => {
         this.productService.getOneWooProduct(this.providerId, this.productId).subscribe({
           next: (data) => {
             this.product.set(data);
             this.isPublished.set(data.status === 'publish');
+            this.productForm.patchValue({
+              name: data.name ?? '',
+              stock_quantity: data.stock_quantity ?? 0,
+              description: data.description ?? '',
+              price: data.price ?? 0
+            });
             resolve();
           },
           error: (err) => {
@@ -69,12 +85,15 @@ export class ProductDetailComponent {
   }
 
   updateWooProduct() {
-    console.log(this.product()?.name);
-    
-    // const payload = {
-    //   name: 
-    // }
-    // this.productService.updateWooProduct(this.productId, payload)
+    const payload = this.productForm.getRawValue();
+    console.log(payload);
+    this.productService.updateWooProduct(this.productId, payload).subscribe({
+      next: (data) => {
+        this.toastr.success('Producto actualizado correctamente')
+      }, error: (error) => {
+        this.toastr.error('Error al actualizar el producto')
+      }
+    })
   }
 
 }
