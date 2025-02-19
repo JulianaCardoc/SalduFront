@@ -25,5 +25,16 @@ export class UserService {
     }
     return this.http.get<User[]>(this.apiUrl, { headers, params });
   }
+
+  getUsersFilter(role?: string) {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.tokenService.getToken()}`
+    });
+    let params = new HttpParams();
+    if (role !== undefined) {
+      params = params.append('role', role);
+    }
+    return this.http.get<User[]>(`${this.apiUrl}/prod-filter`, { headers, params });
+  }
   
 }

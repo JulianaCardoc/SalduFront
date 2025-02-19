@@ -1,0 +1,12 @@
+<div [ngClass]="directions" class="w-full">
+    <div class="flex gap-2 w-full justify-center">
+        <input type="checkbox" id="check" [checked]="checked" 
+        (change)="onToggle()">
+        <label for="check" class="toggle-button" [ngClass]="{ 'active': checked, 'inactive': !checked }"></label>
+    </div>
+    <div class="justify-center text-center w-full">
+        <span class="break-words">
+            Estado actual: <ng-content />
+        </span>
+    </div>
+</div>

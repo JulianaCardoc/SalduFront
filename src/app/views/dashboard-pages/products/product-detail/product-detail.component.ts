@@ -3,18 +3,25 @@ import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faBoxesStacked } from '@fortawesome/free-solid-svg-icons';
+
 import { WooProduct } from '../../../../models/product.model';
 import { ProductsService } from '../../../../services/products.service';
 import { ButtonComponent } from '../../../../shared-components/button/button.component';
+import { ToggleButtonComponent } from '../../../../shared-components/toggle-button/toggle-button.component';
+
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [ButtonComponent, CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [ButtonComponent, CommonModule, ReactiveFormsModule, FormsModule, FontAwesomeModule, ToggleButtonComponent],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.css'
 })
 export class ProductDetailComponent {
+  faBoxesStacked = faBoxesStacked;
+
   @Input() productId!: number;
   @Input() providerId!: number;
 
@@ -30,8 +37,8 @@ export class ProductDetailComponent {
     price: new FormControl(0)
   });
 
-  ngOnInit() {
-    this.getWooProduct();
+  async ngOnInit() {
+    await this.getWooProduct();
   }
 
   async getWooProduct() {
@@ -40,7 +47,7 @@ export class ProductDetailComponent {
         this.productService.getOneWooProduct(this.providerId, this.productId).subscribe({
           next: (data) => {
             this.product.set(data);
-            this.isPublished.set(data.status === 'publish');
+            this.isPublished.set(data.status == 'publish');
             this.productForm.patchValue({
               name: data.name ?? '',
               stock_quantity: data.stock_quantity ?? 0,
@@ -57,6 +64,10 @@ export class ProductDetailComponent {
       });
     }
   }
+  
+  get productStatusLabel(): string {
+    return this.isPublished() ? 'Activo' : 'Inactivo';
+  }
 
   async toggleStatus() {
     if (this.isPublished()) {
@@ -64,10 +75,10 @@ export class ProductDetailComponent {
         next: () => {
           this.isPublished.set(false);
           this.product.set({ ...this.product()!, status: 'draft' });
-          this.toastr.success('Producto enviado a borrador correctamente');
+          this.toastr.success('Producto inactivado correctamente');
         },
         error: () => {
-          this.toastr.error('Error al enviar a borrador el producto');
+          this.toastr.error('Error al inactivar el producto');
         }
       });
     } else {
@@ -75,10 +86,10 @@ export class ProductDetailComponent {
         next: () => {
           this.isPublished.set(true);
           this.product.set({ ...this.product()!, status: 'publish' });
-          this.toastr.success('Producto publicado correctamente');
+          this.toastr.success('Producto activado correctamente');
         },
         error: () => {
-          this.toastr.error('Error al publicar el producto');
+          this.toastr.error('Error al activar el producto');
         }
       });
     }
@@ -95,5 +106,6 @@ export class ProductDetailComponent {
       }
     })
   }
+  
 
 }

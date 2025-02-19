@@ -10,7 +10,7 @@ export class ProductsService {
   private http = inject(HttpClient);
   private apiUrl = 'http://ec2-3-138-142-64.us-east-2.compute.amazonaws.com:3001/upload-product';
   private apiUrlWooProds = 'http://ec2-3-138-142-64.us-east-2.compute.amazonaws.com:3001/products';
-
+  
 
   constructor() { }
 
@@ -61,8 +61,12 @@ export class ProductsService {
     return this.http.post<{url: string}>(`${this.apiUrl}/s3-upload/${providerId}/${productId}`, formData);
   }
 
-  getWooProducts(providerId: number) {
-    return this.http.get<WooProductResponse>(`${this.apiUrlWooProds}/user/${providerId}`)
+  getWooProducts(page: number, limit: number, providerId: number) {    
+    let params = new HttpParams()
+    .set('page', page.toString())
+    .set('limit', limit.toString())
+    .set('providerId', providerId.toString())    
+    return this.http.get<WooProductResponse>(`${this.apiUrlWooProds}/user`, { params })
   }
 
   inactivateProduct(productId: number) {

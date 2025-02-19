@@ -47,6 +47,7 @@ export interface WooProduct {
     }[];
     stock_status?: string;
     stock_quantity?: number;
+    sku: string;
 }
 
 export interface WooProductResponse {

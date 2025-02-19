@@ -10,8 +10,8 @@
                 <div class="bg-white rounded-lg shadow-md flex gap-4 p-4 mt-4">
                     <div class="flex flex-col gap-2 w-3/6">
                         <label for="name">Nombre</label>
-                        <input type="text" name="name" id="name" class="border-2 rounded-md bg-lightgray py-1 px-2 " formControlName="name"
-                            [value]="product()?.name">
+                        <input type="text" name="name" id="name" class="border-2 rounded-md bg-lightgray py-1 px-2 "
+                            formControlName="name" [value]="product()?.name">
                     </div>
                     <div class="flex flex-col gap-2">
                         <label>ID</label>
@@ -19,17 +19,37 @@
                             product()?.id}}</span>
                     </div>
                     <div class="flex flex-col gap-2">
-                        <label for="stock">Stock</label>
-                        <input type="number" name="stock" id="stock" class="border-2 rounded-md bg-lightgray py-1 px-2" formControlName="stock_quantity"
-                            [value]="product()?.stock_quantity">
+                        <label>SKU</label>
+                        <span class="border-2 rounded-md bg-lightgray py-1 px-2 w-fit cursor-default">{{ product()?.sku
+                            || 0
+                            }}
+                        </span>
                     </div>
+                    <div class="flex flex-col gap-2">
+                        <label for="stock">Stock</label>
+                        <div class="flex gap-4">
+                            <input type="number" name="stock" id="stock"
+                                class="border-2 rounded-md bg-lightgray py-1 px-2" formControlName="stock_quantity"
+                                [value]="product()?.stock_quantity">
+                            @if(product()?.stock_quantity == 0) {
+                            <div class="bg-danger w-fit h-fit p-1">
+                                <fa-icon [icon]="faBoxesStacked" class="text-white"></fa-icon>
+                            </div>
+                            } @else {
+                            <div class="bg-success w-fit h-fit p-1">
+                                <fa-icon [icon]="faBoxesStacked" class="text-white"></fa-icon>
+                            </div>
+                            }
+                        </div>
+                    </div>
+
                 </div>
                 <div class="bg-white rounded-lg shadow-md flex gap-4 p-4 mt-4 h-1/3">
                     <div class="flex flex-col gap-2 w-full">
                         <label for="description">Descripción</label>
                         <textarea name="description" id="description"
-                            class="border-2 rounded-md bg-lightgray py-1 px-2 h-full resize-none" formControlName="description"
-                            [value]="product()?.description"></textarea>
+                            class="border-2 rounded-md bg-lightgray py-1 px-2 h-full resize-none"
+                            formControlName="description" [value]="product()?.description"></textarea>
                     </div>
                 </div>
 
@@ -38,20 +58,18 @@
                 <div>
                     <div class="bg-white rounded-lg shadow-md flex flex-col gap-2 p-4">
                         <label>Precio</label>
-                        <input type="number" class="border-2 rounded-md bg-lightgray py-1 px-2 w-full cursor-default" formControlName="price" [value]="product()?.price"/>
+                        <input type="number" class="border-2 rounded-md bg-lightgray py-1 px-2 w-full cursor-default"
+                            formControlName="price" [value]="product()?.price" />
                     </div>
 
                     <div class="bg-white rounded-lg shadow-md flex flex-col gap-2 p-4 mt-4">
                         <div>
                             <span>Estado</span>
                         </div>
-                        <div class="flex gap-2 w-full">
-                            <input type="checkbox" id="check" (ngModel)="isPublished()" (change)="toggleStatus()">
-                            <label for="check" class="toggle-button"
-                                [ngClass]="{ 'active': isPublished(), 'inactive': !isPublished() }"></label>
-                            <span class="break-words">
-                                Estado actual: {{ isPublished() ? 'Publicado' : 'Borrador' }}
-                            </span>
+                        <div class="w-fit">
+                            <app-toggle-button direction="row" [checked]="product()?.status === 'publish'"
+                                (toggleStatus)="toggleStatus()">{{ productStatusLabel}}
+                            </app-toggle-button>
                         </div>
                     </div>
                 </div>
