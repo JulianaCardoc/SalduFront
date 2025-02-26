@@ -31,4 +31,12 @@ export class InvoicesService {
   updateInvoiceInfo(id: number, commission: number) {
     return this.http.put<Invoice>(`${this.apiUrl}/${id}`, { commission })
   }
+
+  uploadEvidence(providerEmail: string, orderId: number, invoiceId: number, file: File | null) {
+    const formData = new FormData();
+    if(file) {
+      formData.append('file', file)
+    }
+    return this.http.post(`${this.apiUrl}/s3-disp/${providerEmail}/${orderId}/${invoiceId}`, formData)
+  }
 }

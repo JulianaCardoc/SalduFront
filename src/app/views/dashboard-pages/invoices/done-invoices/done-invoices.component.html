@@ -12,6 +12,7 @@
                         <td class="p-2 text-center md:p-4">Fecha de facturación</td>
                         <td class="p-2 text-center md:p-4">Estado Siigo</td>
                         <td class="p-2 text-center md:p-4">Enviado</td>
+                        <td class="p-2 text-center md:p-4">Comprobante de dispersión</td>
                         <td class="p-2 text-center md:p-4">Link Siigo</td>
                     </tr>
                 </thead>
@@ -19,12 +20,34 @@
                     @for(invoice of invoices; track $index) {
                     <tr class="text-sm bg-white md:p-4">
                         <td class="p-2 border-b-2 md:p-4">{{ invoice.orderId }}</td>
-                        <td class="p-4 border-b-2 text-right hidden md:table-cell">{{ invoice.orderTotal | currency: '$': 'symbol':'1.0-0' }}</td>
-                        <td class="p-2 border-b-2 text-right md:p-4 ">{{ invoice.taxedPrice | currency: '$': 'symbol':'1.0-0' }}</td>
+                        <td class="p-4 border-b-2 text-right hidden md:table-cell">{{ invoice.orderTotal | currency:
+                            '$': 'symbol':'1.0-0' }}</td>
+                        <td class="p-2 border-b-2 text-right md:p-4 ">{{ invoice.taxedPrice | currency: '$':
+                            'symbol':'1.0-0' }}</td>
                         <td class="p-2 border-b-2 text-center md:p-4">{{ invoice.createdAt.substring(0, 10) }}</td>
                         <td class="p-2 border-b-2 text-center md:p-4">{{ invoice.siigoStatus }}</td>
-                        <td class="p-2 border-b-2 text-center md:p-4">{{ invoice.customerMailed ? 'Enviado al cliente' : 'Pendiente de envío' }}</td>
-                        <td class="p-2 border-b-2 text-center whitespace-nowrap overflow-hidden text-ellipsis break-all max-w-5 md:max-w-prose md:p-4"><app-button typeBtn="button" color="blue"><a [href]="invoice.publicUrl" target="_blank">Ver en Siigo</a></app-button></td>
+                        <td class="p-2 border-b-2 text-center md:p-4">{{ invoice.customerMailed ? 'Enviado al cliente' :
+                            'Pendiente de envío' }}</td>
+                        @if(invoice.disperssionUrl !== null) {
+                            <td
+                            class="p-2 border-b-2 text-center whitespace-nowrap overflow-hidden text-ellipsis break-all max-w-5 md:max-w-prose md:p-4">
+                            <app-button typeBtn="button" color="blue"><a [href]="invoice.disperssionUrl" target="_blank">Ver
+                                    comprobante</a></app-button></td>
+                        } @else {
+                            <td class="p-2 border-b-2 place-items-center md:p-4"><button class="flex cursor-pointer"
+                                (click)="uploader.click()">
+                                <input accept="image/*,.pdf" type="file" name="file"
+                                    (change)="uploadEvidence(invoice.email, invoice.orderId, invoice.id, $event)"
+                                    #uploader class="hidden">
+                                <fa-icon [icon]="faArrowUpFromBracket" class="mr-2"></fa-icon>
+                                <p>Subir archivo</p>
+                            </button></td>
+                        }
+
+                        <td
+                            class="p-2 border-b-2 text-center whitespace-nowrap overflow-hidden text-ellipsis break-all max-w-5 md:max-w-prose md:p-4">
+                            <app-button typeBtn="button" color="blue"><a [href]="invoice.publicUrl" target="_blank">Ver
+                                    en Siigo</a></app-button></td>
                     </tr>
                     }
                 </tbody>

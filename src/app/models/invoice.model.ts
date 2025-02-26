@@ -23,6 +23,7 @@ export interface Invoice {
     orderDate: string;
     paymentOption: PaymentOption;
     salduInlineProducts: SalduInlineProduct[];
+    disperssionUrl: string;
     checkbox: boolean;
 }
 
