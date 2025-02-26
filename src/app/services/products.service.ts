@@ -61,10 +61,8 @@ export class ProductsService {
     return this.http.post<{url: string}>(`${this.apiUrl}/s3-upload/${providerId}/${productId}`, formData);
   }
 
-  getWooProducts(page: number, limit: number, providerId: number) {    
+  getWooProducts(providerId: number) {    
     let params = new HttpParams()
-    .set('page', page.toString())
-    .set('limit', limit.toString())
     .set('providerId', providerId.toString())    
     return this.http.get<WooProductResponse>(`${this.apiUrlWooProds}/user`, { params })
   }

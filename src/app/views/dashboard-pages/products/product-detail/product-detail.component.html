@@ -31,7 +31,7 @@
                             <input type="number" name="stock" id="stock"
                                 class="border-2 rounded-md bg-lightgray py-1 px-2" formControlName="stock_quantity"
                                 [value]="product()?.stock_quantity">
-                            @if(product()?.stock_quantity == 0) {
+                            @if(product()?.stock_status == 'outofstock') {
                             <div class="bg-danger w-fit h-fit p-1">
                                 <fa-icon [icon]="faBoxesStacked" class="text-white"></fa-icon>
                             </div>
@@ -71,6 +71,23 @@
                                 (toggleStatus)="toggleStatus()">{{ productStatusLabel}}
                             </app-toggle-button>
                         </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md flex flex-col gap-2 p-4 mt-4">
+                        <div>
+                            <span>Ubicación</span>
+                        </div>
+                        <div class="w-full">
+                           <label for="state">Departamento</label>
+                           <input type="text" class="border-2 rounded-md bg-lightgray py-1 px-2 w-full cursor-default" formControlName="dpto" [value]="product()?.state">
+                        </div>
+                        <div class="w-full">
+                            <label for="city">Ciudad</label>
+                            <input type="text" class="border-2 rounded-md bg-lightgray py-1 px-2 w-full cursor-default" formControlName="city" [value]="product()?.city">
+                         </div>
+                         <div class="w-full">
+                            <label for="address">Dirección</label>
+                            <input type="text" class="border-2 rounded-md bg-lightgray py-1 px-2 w-full cursor-default" formControlName="address" [value]="product()?.address">
+                         </div>
                     </div>
                 </div>
                 <div class="flex gap-4 justify-end">

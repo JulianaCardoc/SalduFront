@@ -34,7 +34,10 @@ export class ProductDetailComponent {
     name: new FormControl(''),
     stock_quantity: new FormControl(0),
     description: new FormControl(''),
-    price: new FormControl(0)
+    price: new FormControl(0),
+    dpto: new FormControl(''),
+    city: new FormControl(''),
+    address: new FormControl('')
   });
 
   async ngOnInit() {
@@ -46,6 +49,8 @@ export class ProductDetailComponent {
       await new Promise<void>((resolve) => {
         this.productService.getOneWooProduct(this.providerId, this.productId).subscribe({
           next: (data) => {
+            console.log(data);
+            
             this.product.set(data);
             this.isPublished.set(data.status == 'publish');
             this.productForm.patchValue({

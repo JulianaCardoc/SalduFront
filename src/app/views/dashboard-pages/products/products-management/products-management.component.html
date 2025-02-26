@@ -2,8 +2,9 @@
     <h1 class="py-4">Gestión de productos</h1>
     <form [formGroup]="formProvider" class="py-2 flex md:justify-between">
         <article class="flex flex-col gap-4 md:flex-row">
-            <select name="" id="" class="p-2 border-b-2 bg-lightgray max-w-min mr-12" formControlName="selectProvider">
-                <option value="default">Seleccione un proveedor</option>
+            <select name="" id="" class="p-2 border-b-2 bg-lightgray max-w-min mr-12" formControlName="selectProvider"
+                (change)="getWooProducts()">
+                <option value="" selected disabled hidden>Seleccione un proveedor</option>
                 @for(user of users; track $index) {
                 <option [value]="user.id_wooCommerce">{{ user.email }}</option>
                 }
@@ -11,20 +12,20 @@
             @if(products().length > 0) {
             <div class="mr-12">
                 <input placeholder="SKU o Nombre" formControlName="searchText" type="text" name="" id="search"
-                    class="p-2 border-2 rounded-lg">
-                <fa-icon class="pl-4 cursor-pointer" [icon]="faMagnifyingGlass" (click)="getWooProducts()"></fa-icon>
+                    class="p-2 border-2 rounded-lg" (input)="applyFilters()">
+                <fa-icon class="pl-4 cursor-pointer" [icon]="faMagnifyingGlass"></fa-icon>
             </div>
-            <select name="" id="" class="p-2 border-b-2 bg-lightgray max-w-min" formControlName="selectStatus">
-                <option value="default">Estado</option>
-                @for(status of productStatuses; track $index) {
-                <option [value]="status">{{ status }}</option>
-                }
+            <select name="" id="" class="p-2 border-b-2 bg-lightgray max-w-min" formControlName="selectStatus"
+                (change)="changeStatus($event)">
+                <option value="" selected disabled hidden>Estado</option>
+                <option value="publish">Activo</option>
+                <option value="draft">Inactivo</option>
             </select>
             }
         </article>
         @if(products().length > 0) {
         <span class="bg-bg text-white text-center max-h-fit max-w-fit px-8 py-2">Productos en total: {{
-            productResponse?.totalElements
+            totalItems()
             }}</span>
         }
     </form>
@@ -36,12 +37,14 @@
                 <td class="p-2 text-center md:p-4">SKU</td>
                 <td class="p-2 md:p-4">Nombre</td>
                 <td class="p-2 text-center md:p-4">Descripción</td>
+                <td class="p-2 text-center md:p-4">Stock</td>
                 <td class="p-2 text-right md:p-4">Precio</td>
+                <td class="p-2 text-center md:p-4">Dpto</td>
                 <td class="p-2 text-center md:p-4">Cambiar estado</td>
-
+                <td class="p-2 text-center md:p-4">Editar</td>
             </tr>
         </thead>
-        @for(product of (filteredProducts() | filter: formProvider.get('searchText')?.value); track $index) {
+        @for(product of filteredProducts(); track $index) {
         <tbody>
             <tr class="text-sm bg-white h-auto md:p-4">
                 <td class="p-2 border-b-2 md:p-4 md:max-w-40"><a
@@ -58,8 +61,12 @@
                     <a [routerLink]="['/product-detail/', formProvider.get('selectProvider')?.value , product.id]">{{
                         product.description }}</a>
                 </td>
+                <td class="p-2 border-b-2 max-w-40 break-normal text-center md:p-4">{{ product.stock_quantity || 0 }}
+                </td>
                 <td class="p-2 border-b-2 max-w-40 break-normal text-right md:p-4">{{ product.price | currency: '$':
                     'symbol':'1.0-0' }}</td>
+                <td class="p-2 border-b-2 max-w-40 break-normal text-center md:p-4"> {{
+                    product.state }} </td>
                 <td class="p-2 border-b-2 md:p-4">
                     <div class="flex flex-col justify-center gap-2 w-full">
                         <app-toggle-button direction="col" [checked]="product.status === 'publish'"
@@ -68,6 +75,9 @@
                         </app-toggle-button>
                     </div>
                 </td>
+                <td class="p-2 border-b-2 max-w-40 break-normal text-center md:p-4"><a
+                        [routerLink]="['/product-detail/', formProvider.get('selectProvider')?.value , product.id]"><fa-icon
+                            [icon]="faPenToSquare"></fa-icon></a></td>
             </tr>
         </tbody>
         }
@@ -75,22 +85,22 @@
     <div>
         <ul class="flex justify-center mt-2 mb-2">
             <li class="border-2 text-white bg-blue p-2 cursor-pointer hover:bg-mediumblue"
-                [class.opacity-50]="pageNumber === 1" [class.pointer-events-none]="pageNumber === 1">
-                <a (click)="onPageChange(pageNumber - 1)">
+                [class.opacity-50]="currentPage() === 1" [class.pointer-events-none]="currentPage() === 1">
+                <a (click)="onPageChange(currentPage() - 1)">
                     <fa-icon [icon]="faChevronLeft"></fa-icon>
                 </a>
             </li>
             @for(page of pageNumbers(); track $index) {
-            <li *ngIf="page !== -1" [class.bg-mediumblue]="page == pageNumber"
+            <li *ngIf="page !== -1" [class.bg-mediumblue]="page == pageNumber()"
                 class="border-2 text-white bg-blue p-2 cursor-pointer hover:bg-mediumblue">
                 <a (click)="onPageChange(page)">{{ page }}</a>
             </li>
             <li *ngIf="page === -1" class="border-2 text-white bg-blue p-2">...</li>
             }
             <li class="border-2 text-white bg-blue p-2 cursor-pointer hover:bg-mediumblue"
-                [class.opacity-50]="pageNumber === productResponse?.totalPages"
-                [class.pointer-events-none]="pageNumber === productResponse?.totalPages">
-                <a (click)="onPageChange(pageNumber + 1)">
+                [class.opacity-50]="currentPage() === totalPages()"
+                [class.pointer-events-none]="currentPage() === totalPages()">
+                <a (click)="onPageChange(currentPage() + 1)">
                     <fa-icon [icon]="faChevronRight"></fa-icon>
                 </a>
             </li>
