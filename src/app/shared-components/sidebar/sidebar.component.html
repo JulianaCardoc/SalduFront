@@ -99,12 +99,12 @@
                     </a>
                 </cdk-accordion-item>
             </cdk-accordion>
-
-            <!-- <a href="#">
-                <li class="py-4 px-8">
-                    <fa-icon [icon]="faDolly"></fa-icon> Mis Órdenes
+            <a routerLink="/orders-list">
+                <li class="py-4 px-5 mx-2 rounded-3xl" [routerLinkActive]="['bg-bglight']">
+                    <fa-icon [icon]="faDolly" class="px-2"></fa-icon> Mis Órdenes
                 </li>
             </a>
+            <!-- 
             <a href="#">
                 <li class="py-4 px-8">
                     <fa-icon [icon]="faChartBar"></fa-icon> Reportes
