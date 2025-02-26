@@ -23,7 +23,7 @@
                     <a routerLink="/pending-invoices">
                         <li class="py-3 px-5 mx-5 mt-2 mb-1 rounded-3xl" [routerLinkActive]="['bg-bglight']"
                             [style.display]="itemInvoices.expanded ? '' : 'none'"><fa-icon [icon]="faFileInvoice"
-                                class="px-2"></fa-icon> Órdenes pendientes
+                                class="px-2"></fa-icon> Facturas pendientes
                         </li>
                     </a>
                 </cdk-accordion-item>
@@ -31,7 +31,7 @@
                     <a routerLink="/done-invoices">
                         <li class="py-3 px-5 mx-5 mb-2 rounded-3xl" [routerLinkActive]="['bg-bglight']"
                             [style.display]="itemInvoices.expanded ? '' : 'none'"><fa-icon [icon]="faFileInvoiceDollar"
-                                class="px-2"></fa-icon> Órdenes facturadas</li>
+                                class="px-2"></fa-icon> Facturas completadas</li>
                     </a>
                 </cdk-accordion-item>
             </cdk-accordion>
@@ -101,7 +101,7 @@
             </cdk-accordion>
             <a routerLink="/orders-list">
                 <li class="py-4 px-5 mx-2 rounded-3xl" [routerLinkActive]="['bg-bglight']">
-                    <fa-icon [icon]="faDolly" class="px-2"></fa-icon> Mis Órdenes
+                    <fa-icon [icon]="faDolly" class="px-2"></fa-icon> Órdenes
                 </li>
             </a>
             <!-- 

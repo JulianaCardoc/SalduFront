@@ -1,1 +1,183 @@
-<p>order-detail works!</p>
+<section class="bg-bg min-h-screen max-h-dvh overflow-y-auto">
+    <div class="max-w-screen-lg m-auto bg-white min-h-screen">
+        <div class="py-4 min-h-screen flex flex-col justify-between">
+            <article>
+                <div class="p-4 md:px-14 flex justify-between md:py-6">
+                    <div>
+                        <p class="whitespace-nowrap text-lighttext">Orden</p>
+                        <p class="whitespace-nowrap font-bold text-main text-right">
+                            # {{ order()?.id }}</p>
+                    </div>
+                    <div>
+                        <p class="whitespace-nowrap text-lighttext text-right">Fecha
+                        </p>
+                        <p class="whitespace-nowrap font-bold text-right">
+                            {{ order()?.date_created?.substring(0, 10) }}</p>
+                    </div>
+                </div>
+                <div class="p-4 md:px-14 flex justify-between md:py-6">
+                    <div class="flex flex-col">
+                        <p class="whitespace-nowrap font-bold">Total
+                        </p>
+                        <p class="whitespace-nowrap text-left">
+                            {{ order()?.total | currency: '$':
+                            'symbol':'1.0-0' }}</p>
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="whitespace-nowrap font-bold">Total dispersión
+                        </p>
+                        <p class="whitespace-nowrap text-left">
+                            {{ order()?.total | currency: '$':
+                            'symbol':'1.0-0' }}</p>
+                    </div>
+                    <form [formGroup]="formProvider" class="flex flex-col">
+                        <p class="whitespace-nowrap font-bold">Estado</p>
+                        <select name="status" id="status" formControlName="status" (change)="changeOrderStatus(formProvider.value.status)">
+                            @for(status of statuses; track $index) {
+                                <option [value]="status" [selected]="status === order()?.status">{{ status }}</option>
+                            }
+                        </select>
+                    </form>
+
+                </div>
+
+                <div class="bg-lightgray p-4 md:px-14 md:py-6">
+                    <h2 class="font-bold pb-4">Información del cliente</h2>
+                    <table class="w-full border-collapse border-spacing-0">
+                        <tbody class="flex">
+                            <tr>
+                                <td class="w-1/2 align-top">
+                                    <div class="text-bglight">
+                                        <p>Nombre:</p>
+                                        <p>Telefono:</p>
+                                        <p>Dirección:</p>
+                                        <p>Ubicación:</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="w-1/2 align-top">
+                                    <div class="text-bglight">
+                                        <p>{{ order()?.billing?.first_name || order()?.billing?.company }}
+                                            {{order()?.billing?.last_name }}</p>
+                                        <p>{{ order()?.billing?.phone }}</p>
+                                        <p>{{ order()?.billing?.address_1 || order()?.billing?.address_2 }}</p>
+                                        <p>{{ order()?.billing?.city }}, {{ order()?.billing?.state }}, {{
+                                            order()?.billing?.country }}</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="py-4 pr-4 pl-2 text-sm text-bg md:px-14 md:py-10">
+                    <table class="w-full border-collapse border-spacing-0">
+                        <thead>
+                            <tr>
+                                <td class="border-b-2 border-main pb-3 pl-3 font-bold">#</td>
+                                <td class="border-b-2 border-main pb-3 pl-2 text-center font-bold">ID</td>
+                                <td class="border-b-2 border-main pb-3 pl-2 font-bold">Descripción del producto</td>
+                                <td class="border-b-2 border-main pb-3 pl-2 text-center font-bold">Cantidad</td>
+                                <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold">Vr. Unitario</td>
+                                <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold">Vr. Total</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @for(item of items(); track $index) {
+                            <tr>
+                                <td class="border-b py-3 pl-3"> {{$index + 1}}</td>
+                                <td class="border-b py-3 pl-2 text-left">{{ item.product_id }}</td>
+                                <td class="border-b py-3 pl-2"> {{ item.name }}</td>
+                                <td class="border-b py-3 max-w-2 text-center">{{ item.quantity }}</td>
+                                <td class="border-b py-3 pl-2 text-right ">{{ item.price | currency: '$':
+                                    'symbol':'1.0-0' }}</td>
+                                <td class="border-b py-3 pl-2 text-right"> {{ item.total | currency: '$':
+                                    'symbol':'1.0-0' }}</td>
+                            </tr>
+                            }
+                            <td colspan="7" class="pt-4">
+                                <table class="w-full border-collapse border-spacing-0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="w-full"></td>
+                                            <td>
+                                                <table class="w-full border-collapse border-spacing-0">
+                                                    <tbody>
+                                                        <tr class="bg-blue">
+                                                            <td class="bg-main p-3">
+                                                                <div class="whitespace-nowrap font-bold text-white">
+                                                                    Total:
+                                                                </div>
+                                                            </td>
+                                                            <td class="bg-main p-3 text-right">
+                                                                <div class="whitespace-nowrap font-bold text-white">
+                                                                    {{ order()?.total | currency: '$' : 'symbol':'1.0-0'
+                                                                    }}
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+            <div class="bg-lightgray p-4 md:px-14 md:py-6">
+                <div class="flex justify-between">
+                    <h2 class="font-bold pb-4">Cargar evidencia</h2>
+                </div>
+                <table class="w-full border-collapse border-spacing-0">
+                    <thead>
+                        <tr class="border-b-2">
+                            <td class="font-bold">#</td>
+                            <td class="font-bold">Tipo de evidencia</td>
+                            <td class="font-bold">Link</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b-2">
+                            <td class="py-6">1</td>
+                            <td class="py-6">Entrega</td>
+                            @if(evidences()?.deliveryUrl !== null) {
+                            <td class="py-6"><app-button typeBtn="button" color="blue"><a [href]="evidences()?.deliveryUrl" target="_blank">Ver archivo</a></app-button></td>
+                            } @else {
+                            <td class="py-6"><button class="flex cursor-pointer" (click)="uploader.click()">
+                                <input accept="image/*,.pdf" type="file" name="file"
+                                    (change)="uploadEvidence('delivery', $event)" #uploader class="hidden">
+                                <fa-icon [icon]="faArrowUpFromBracket" class="mr-2"></fa-icon>
+                                <p>Subir archivo</p>
+                            </button></td>
+                            }
+                        </tr>
+                        <tr>
+                            <td class="py-6">2</td>
+                            <td class="py-6">Factura</td>
+                            @if(evidences()?.sellerInvoiceUrl !== null) {
+                            <td class="py-6">{{ evidences()?.sellerInvoiceUrl }}</td>
+                            } @else {
+                            <td class="py-6"><button class="flex cursor-pointer" (click)="uploader.click()">
+                                <input accept="image/*,.pdf" type="file" name="file"
+                                    (change)="uploadEvidence('invoicing', $event)" #uploader class="hidden">
+                                <fa-icon [icon]="faArrowUpFromBracket" class="mr-2"></fa-icon>
+                                <p>Subir archivo</p>
+                            </button></td>
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- <article class="flex justify-end bottom-full mt-12 pr-2 gap-4 md:mt-28 md:pr-10">
+                <app-button typeBtn="submit" color="success">Guardar</app-button>
+                <app-button typeBtn="button" color="blue">Editar</app-button>
+                <app-button typeBtn="submit" color="blue">Facturar</app-button>
+            </article> -->
+        </div>
+    </div>
+</section>

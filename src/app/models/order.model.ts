@@ -48,3 +48,9 @@ export interface IMetaData {
     key: string
     value: string
 }
+
+export interface Evidence {
+    deliveryUrl: string;
+    sellerInvoiceUrl: string;
+    createdAt: string;
+}

@@ -26,15 +26,19 @@
         @for(order of orders(); track $index) {
         <tbody>
             <tr class="text-sm bg-white h-auto md:p-4">
-                <td class="p-2 border-b-2 break-all md:p-4 md:max-w-40">{{ order.id}}</td>
-                <td class="p-2 border-b-2 text-center md:p-4">{{ order.billing?.first_name }}
-                    {{ order.billing?.last_name }}</td>
-                <td class="p-2 border-b-2 text-right max-w-40 break-normal md:p-4">{{ order.number }}</td>
+                <td class="p-2 border-b-2 break-all md:p-4 md:max-w-40"><a [routerLink]="['/order-detail', order.id, formProvider.value.selectProvider]"
+                    target="_blank">{{ order.id}}</a></td>
+                <td class="p-2 border-b-2 text-center md:p-4"><a [routerLink]="['/order-detail', order.id, formProvider.value.selectProvider]"
+                    target="_blank">{{ order.billing?.first_name }}
+                    {{ order.billing?.last_name }}</a></td>
+                <td class="p-2 border-b-2 text-right max-w-40 break-normal md:p-4"><a [routerLink]="['/order-detail', order.id, formProvider.value.selectProvider]"
+                    target="_blank">{{ order.number }}</a></td>
                 <td class="p-2 border-b-2 text-right md:p-4">{{ order.total | currency: '$': 'symbol':'1.0-0'  }}</td>
                 <td class="p-2 border-b-2 text-center md:p-4">{{ order.status}}</td>
                 <td class="p-2 border-b-2 text-center md:p-4">{{ order.date_modified.substring(0, 10) }}</td>
                 <td class="p-2 border-b-2 text-center md:p-4">
-                    <app-button typeBtn="button" color="blue">Ver detalles</app-button>
+                    <app-button typeBtn="button" color="blue"><a [routerLink]="['/order-detail', order.id, formProvider.value.selectProvider]"
+                        target="_blank">Ver detalles</a></app-button>
                 </td>
             </tr>
         </tbody>

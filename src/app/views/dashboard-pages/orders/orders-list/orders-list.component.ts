@@ -10,11 +10,12 @@ import { IOrders } from '../../../../models/order.model';
 import { ButtonComponent } from '../../../../shared-components/button/button.component';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-orders-list',
   standalone: true,
-  imports: [FontAwesomeModule, ButtonComponent, ReactiveFormsModule, CommonModule],
+  imports: [FontAwesomeModule, ButtonComponent, ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './orders-list.component.html',
   styleUrl: './orders-list.component.css'
 })

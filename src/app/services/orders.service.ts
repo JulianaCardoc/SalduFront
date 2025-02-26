@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { IOrders } from '../models/order.model';
+import { Evidence, IOrders } from '../models/order.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,5 +14,25 @@ export class OrdersService {
 
   getOrders(providerId: number) {
     return this.http.get<IOrders[]>(`${this.apiUrl}/seller/${providerId}`)
+  }
+
+  getOneOrder(orderId: number) {
+    return this.http.get<IOrders>(`${this.apiUrl}/${orderId}`)
+  }
+
+  getEvidence(orderId: number) {
+    return this.http.get<Evidence>(`${this.apiUrl}/evidence/${orderId}`)
+  }
+
+  uploadEvidence(providerId: number, orderId: number, type: string, file: File | null) {
+    const formData = new FormData();
+    if(file) {
+      formData.append('file', file)
+    }
+    return this.http.post(`${this.apiUrl}/s3-evidence/${providerId}/${orderId}/${type}`, formData)
+  }
+
+  changeOrderStatus(orderId: number, status: string) {
+    return this.http.put(`${this.apiUrl}/${orderId}`, {status})
   }
 }
